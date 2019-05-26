@@ -13,7 +13,7 @@ export const setFontSize = () => {
     }
     else if (width < 700) {
         return ({
-            number: responsiveFontSize(14),
+            number: responsiveFontSize(13),
             text: responsiveFontSize(3.5)
         });
     }

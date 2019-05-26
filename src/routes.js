@@ -2,7 +2,7 @@ import Clock from "./Clock";
 import {createDrawerNavigator} from 'react-navigation-drawer'
 import {createAppContainer} from 'react-navigation'
 import React from 'react';
-import {CheckBox, Container, Content, Form, Icon, Item, Picker, Text} from 'native-base'
+import {Body, Button, Container, Content, Icon, Left, ListItem, Picker, Right, Switch, Text} from 'native-base'
 import mainStore from "./store";
 import {observer} from 'mobx-react'
 
@@ -14,26 +14,33 @@ class CustomDrawer extends React.Component {
 
     _onChangeValue(val) {
         this.props.navigation.closeDrawer();
-        this.props.navigation.navigate('Clock', {props: {rerender: true}});
+        this.props.navigation.navigate('Clock', {props: {}});
         mainStore.setTime(val)
     }
 
     _onPressButton(fun: function){
-        this.props.navigation.navigate('Clock', {props: {rerender: true}});
-        fun
+        this.props.navigation.navigate('Clock', {props: {}});
+        fun()
     }
 
     render(){
         return(
-            <Container style={{backgroundColor: "rgba(216, 216, 216, 0.3)"}}>
-                <Content contentContainerStyle={{marginTop: 40, margin: 10}}>
-                    <Form>
-                        <Item picker>
-                            <Text>Set Timeout</Text>
+            <Container>
+                <Content contentContainerStyle={{marginTop: 40}}>
+                    <ListItem icon>
+                        <Left>
+                            <Button style={{backgroundColor: "#FF9501"}}>
+                                <Icon active name="ios-timer" type="Ionicons"/>
+                            </Button>
+                        </Left>
+                        <Body>
+                            <Text>Time</Text>
+                        </Body>
+                        <Right>
                             <Picker
                                 mode="dropdown"
                                 iosIcon={<Icon name="arrow-down"/>}
-                                style={{width: undefined}}
+                                style={{width: 100}}
                                 placeholder="Select round time"
                                 selectedValue={mainStore.time}
                                 onValueChange={this._onChangeValue.bind(this)}
@@ -46,16 +53,36 @@ class CustomDrawer extends React.Component {
                                 <Picker.Item label="90 sec" value={90}/>
                                 <Picker.Item label="120 sec" value={120}/>
                             </Picker>
-                        </Item>
-                        <Item picker style={{paddingTop: 10, paddingBottom: 10}}>
-                            <Text> Sounds: </Text>
-                            <CheckBox checked={mainStore.sounds} onPress={() => this._onPressButton(mainStore.setSounds())}/>
-                        </Item>
-                        <Item picker style={{paddingTop: 10, paddingBottom: 10}}>
-                            <Text> Vibrations: </Text>
-                            <CheckBox checked={mainStore.vibrations} onPress={() => this._onPressButton(mainStore.setVibrations())}/>
-                        </Item>
-                    </Form>
+                        </Right>
+                    </ListItem>
+                    <ListItem icon>
+                        <Left>
+                            <Button style={{backgroundColor: "#FF9501"}}>
+                                <Icon active name="sound" type="AntDesign"/>
+                            </Button>
+                        </Left>
+                        <Body>
+                        <Text>Sounds</Text>
+                        </Body>
+                        <Right>
+                            <Switch value={mainStore.sounds}
+                                    onValueChange={() => this._onPressButton(mainStore.setSounds)}/>
+                        </Right>
+                    </ListItem>
+                    <ListItem icon>
+                        <Left>
+                            <Button style={{backgroundColor: "#FF9501"}}>
+                                <Icon active name="vibration" type="MaterialIcons"/>
+                            </Button>
+                        </Left>
+                        <Body>
+                        <Text>Vibrations</Text>
+                        </Body>
+                        <Right>
+                            <Switch value={mainStore.vibrations}
+                                    onValueChange={() => this._onPressButton(mainStore.setVibrations)}/>
+                        </Right>
+                    </ListItem>
                 </Content>
             </Container>
         )
